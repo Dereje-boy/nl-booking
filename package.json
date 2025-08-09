@@ -18,6 +18,8 @@
   "homepage": "https://github.com/dereje-boy/nl-booking#readme",
   "dependencies": {
     "express": "^5.1.0",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "cookie-parser": "~1.4.4",
+    "express-handlebars": "^8.0.3"
   }
 }
