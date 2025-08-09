@@ -9,13 +9,19 @@ var cookieParser = require('cookie-parser');
 
 //importing routes
 // var indexRouter = require('./routes/index');
-// var usersRouter = require('./routes/users');
+var accountsRouter = require('./routes/accounts');
+var servicesRouter = require('./routes/services');
+var bookingsRouter = require('./routes/bookings');
 
-//consuming our routes
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
 
 const app = express();
+
+
+//consuming our routes
+app.use('/api/accounts/', accountsRouter);
+app.use('/api/services/', servicesRouter);
+app.use('/api/bookings/', bookingsRouter);
+
 
 //consuming middlewares
 app.use(express.json());
