@@ -1,0 +1,23 @@
+{
+  "name": "nl-booking",
+  "version": "1.0.0",
+  "description": "\"This is fullstack app made by AUWC students as their IT final year project on Online Booking for Negash Lodge Services\"",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dereje-boy/nl-booking.git"
+  },
+  "author": "All-Members",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dereje-boy/nl-booking/issues"
+  },
+  "homepage": "https://github.com/dereje-boy/nl-booking#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  }
+}
