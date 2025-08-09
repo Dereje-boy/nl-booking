@@ -4,7 +4,7 @@
   "description": "\"This is fullstack app made by AUWC students as their IT final year project on Online Booking for Negash Lodge Services\"",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
