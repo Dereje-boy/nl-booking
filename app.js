@@ -8,19 +8,19 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 
 //importing routes
-// var indexRouter = require('./routes/index');
 var accountsRouter = require('./routes/accounts');
 var servicesRouter = require('./routes/services');
 var bookingsRouter = require('./routes/bookings');
+var loginRouter = require('./routes/login');
 
 
 const app = express();
-
 
 //consuming our routes
 app.use('/api/accounts/', accountsRouter);
 app.use('/api/services/', servicesRouter);
 app.use('/api/bookings/', bookingsRouter);
+app.use('/login/', loginRouter);
 
 
 //consuming middlewares
