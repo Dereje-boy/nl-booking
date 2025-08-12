@@ -13,6 +13,7 @@ var servicesRouter = require('./routes/services');
 var bookingsRouter = require('./routes/bookings');
 var loginRouter = require('./routes/login');
 var signupRouter = require('./routes/signup');
+var resetPasswordRouter = require('./routes/reset-password');
 
 
 const app = express();
@@ -23,6 +24,7 @@ app.use('/api/services/', servicesRouter);
 app.use('/api/bookings/', bookingsRouter);
 app.use('/login/', loginRouter);
 app.use('/signup/', signupRouter);
+app.use('/request-reset-password/', resetPasswordRouter);
 
 
 //consuming middlewares
