@@ -17,6 +17,9 @@ exports.getOneService = async (req, res) => {
 exports.createNewService = async (req, res) => {
     res.send('new service created')
 };
+exports.createNewServiceForm = async (req, res) => {
+    res.render('services/create-service', { title: 'Create Service', layout: false });
+};
 
 exports.updateService = async (req, res) => {
     res.send('service inform updated')

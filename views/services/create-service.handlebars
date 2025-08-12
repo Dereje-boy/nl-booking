@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .service-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .service-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .service-header h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group label.optional::after {
+            content: " (optional)";
+            color: #999;
+            font-weight: normal;
+            font-size: 0.85rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e1e1;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+            max-height: 200px;
+            font-family: inherit;
+        }
+
+        .form-group input[type="file"] {
+            padding: 0.5rem;
+            background: #f9f9f9;
+        }
+
+        .form-group input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .form-group input[type="number"]::-webkit-outer-spin-button,
+        .form-group input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group.error input,
+        .form-group.error textarea,
+        .form-group.error select {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        .file-input-display {
+            margin-top: 0.5rem;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: #666;
+            padding: 0.5rem;
+            background: #f9f9f9;
+            border-radius: 3px;
+        }
+
+        .file-preview {
+            width: 40px;
+            height: 40px;
+            border-radius: 3px;
+            object-fit: cover;
+            border: 1px solid #e1e1e1;
+        }
+
+        .file-info {
+            flex-grow: 1;
+        }
+
+        .file-remove {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .file-remove:hover {
+            background: #c0392b;
+        }
+
+        .service-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .service-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .service-btn:active {
+            transform: translateY(0);
+        }
+
+        .service-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .success-message {
+            background: #2ecc71;
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+            text-align: center;
+        }
+
+        .navigation-links {
+            margin-top: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            text-align: center;
+        }
+
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.5rem;
+            border-radius: 3px;
+            transition: background-color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+            background-color: rgba(102, 126, 234, 0.05);
+        }
+
+        .nav-links .primary-link {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1rem 0;
+            color: #ccc;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e1e1e1;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 600px) {
+            .service-container {
+                padding: 1.5rem;
+            }
+
+            .service-header h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="service-container">
+        <div class="service-header">
+            <h1>Create Service</h1>
+            <p>Add a new service to your listing</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            Service created successfully! Your listing is now active.
+        </div>
+
+        <form id="serviceForm" novalidate>
+            <div class="form-group" id="shortNameGroup">
+                <label for="shortName">Service Short Name</label>
+                <input type="text" id="shortName" name="shortName" required placeholder="Enter service name">
+                <div class="error-message" id="shortNameError"></div>
+            </div>
+
+            <div class="form-group" id="fullNameGroup">
+                <label for="fullName" class="optional">Full Service Name</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Enter full service name">
+                <div class="error-message" id="fullNameError"></div>
+            </div>
+
+            <div class="form-group" id="descriptionGroup">
+                <label for="description" class="optional">Description</label>
+                <textarea id="description" name="description" placeholder="Describe your service..."></textarea>
+                <div class="error-message" id="descriptionError"></div>
+            </div>
+
+            <div class="form-group" id="photosGroup">
+                <label for="photos" class="optional">Service Photos</label>
+                <input type="file" id="photos" name="photos" multiple accept=".jpg,.jpeg,.png">
+                <div class="file-input-display" id="fileDisplay"></div>
+                <div class="error-message" id="photosError"></div>
+            </div>
+
+            <div class="form-group" id="amountGroup">
+                <label for="amount">Amount (Price)</label>
+                <input type="number" id="amount" name="amount" value="1" min="1" step="1" required>
+                <div class="error-message" id="amountError"></div>
+            </div>
+
+            <div class="form-group" id="typeGroup">
+                <label for="type">Service Type</label>
+                <select id="type" name="type" required>
+                    <option value="">Select service type</option>
+                    <option value="Room">Room</option>
+                    <option value="Horse Riding">Horse Riding</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Swimming">Swimming</option>
+                    <option value="Massage and Spa">Massage and Spa</option>
+                </select>
+                <div class="error-message" id="typeError"></div>
+            </div>
+
+            <button type="submit" class="service-btn" id="serviceBtn">
+                Create Service
+            </button>
+        </form>
+
+        <div class="navigation-links">
+            <div class="divider">
+                <span>or</span>
+            </div>
+
+            <div class="nav-links">
+                <a href="/dashboard" class="primary-link">← Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ServiceValidator {
+            constructor() {
+                this.form = document.getElementById('serviceForm');
+                this.shortNameInput = document.getElementById('shortName');
+                this.fullNameInput = document.getElementById('fullName');
+                this.descriptionInput = document.getElementById('description');
+                this.photosInput = document.getElementById('photos');
+                this.amountInput = document.getElementById('amount');
+                this.typeInput = document.getElementById('type');
+                this.serviceBtn = document.getElementById('serviceBtn');
+                this.successMessage = document.getElementById('successMessage');
+                this.fileDisplay = document.getElementById('fileDisplay');
+
+                this.selectedFiles = [];
+
+                this.initEventListeners();
+            }
+
+            initEventListeners() {
+                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+
+                // Validation on blur
+                this.shortNameInput.addEventListener('blur', () => this.validateShortName());
+                this.fullNameInput.addEventListener('blur', () => this.validateFullName());
+                this.descriptionInput.addEventListener('blur', () => this.validateDescription());
+                this.photosInput.addEventListener('change', () => this.validatePhotos());
+                this.amountInput.addEventListener('blur', () => this.validateAmount());
+                this.typeInput.addEventListener('change', () => this.validateType());
+
+                // Clear errors on input
+                this.shortNameInput.addEventListener('input', () => this.clearError('shortName'));
+                this.fullNameInput.addEventListener('input', () => this.clearError('fullName'));
+                this.descriptionInput.addEventListener('input', () => this.clearError('description'));
+                this.amountInput.addEventListener('input', () => this.clearError('amount'));
+                this.typeInput.addEventListener('change', () => this.clearError('type'));
+            }
+
+            validateShortName() {
+                const shortName = this.shortNameInput.value.trim();
+
+                if (!shortName) {
+                    this.showError('shortName', 'Service short name is required');
+                    return false;
+                }
+
+                if (shortName.length < 3) {
+                    this.showError('shortName', 'Service name must be at least 3 characters');
+                    return false;
+                }
+
+                this.clearError('shortName');
+                return true;
+            }
+
+            validateFullName() {
+                // Full name is optional, so always valid
+                this.clearError('fullName');
+                return true;
+            }
+
+            validateDescription() {
+                // Description is optional, so always valid
+                this.clearError('description');
+                return true;
+            }
+
+            validatePhotos() {
+                const files = Array.from(this.photosInput.files);
+
+                if (files.length > 0) {
+                    // Validate each file
+                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                    const maxSize = 5 * 1024 * 1024; // 5MB
+
+                    for (let file of files) {
+                        if (!allowedTypes.includes(file.type)) {
+                            this.showError('photos', 'Please select only JPEG or PNG images');
+                            this.selectedFiles = [];
+                            this.updateFileDisplay();
+                            return false;
+                        }
+
+                        if (file.size > maxSize) {
+                            this.showError('photos', 'Each image must be less than 5MB');
+                            this.selectedFiles = [];
+                            this.updateFileDisplay();
+                            return false;
+                        }
+                    }
+
+                    this.selectedFiles = files;
+                    this.updateFileDisplay();
+                } else {
+                    this.selectedFiles = [];
+                    this.updateFileDisplay();
+                }
+
+                this.clearError('photos');
+                return true;
+            }
+
+            updateFileDisplay() {
+                this.fileDisplay.innerHTML = '';
+
+                this.selectedFiles.forEach((file, index) => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        fileItem.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview" class="file-preview">
+                            <div class="file-info">
+                                <div>${file.name}</div>
+                                <div>(${(file.size / 1024).toFixed(1)} KB)</div>
+                            </div>
+                            <button type="button" class="file-remove" onclick="serviceValidator.removeFile(${index})">Remove</button>
+                        `;
+                    };
+                    reader.readAsDataURL(file);
+
+                    this.fileDisplay.appendChild(fileItem);
+                });
+            }
+
+            removeFile(index) {
+                this.selectedFiles.splice(index, 1);
+                this.updateFileDisplay();
+
+                // Update the file input
+                const dt = new DataTransfer();
+                this.selectedFiles.forEach(file => dt.items.add(file));
+                this.photosInput.files = dt.files;
+            }
+
+            validateAmount() {
+                const amount = this.amountInput.value;
+
+                if (!amount) {
+                    this.showError('amount', 'Amount is required');
+                    return false;
+                }
+
+                const numAmount = parseInt(amount);
+                if (isNaN(numAmount) || numAmount < 1) {
+                    this.showError('amount', 'Amount must be at least 1');
+                    return false;
+                }
+
+                this.clearError('amount');
+                return true;
+            }
+
+            validateType() {
+                const type = this.typeInput.value;
+
+                if (!type) {
+                    this.showError('type', 'Please select a service type');
+                    return false;
+                }
+
+                this.clearError('type');
+                return true;
+            }
+
+            showError(field, message) {
+                const group = document.getElementById(`${field}Group`);
+                const error = document.getElementById(`${field}Error`);
+
+                group.classList.add('error');
+                error.textContent = message;
+            }
+
+            clearError(field) {
+                const group = document.getElementById(`${field}Group`);
+                const error = document.getElementById(`${field}Error`);
+
+                group.classList.remove('error');
+                error.textContent = '';
+            }
+
+            showSuccess() {
+                this.successMessage.style.display = 'block';
+                setTimeout(() => {
+                    this.successMessage.style.display = 'none';
+                }, 3000);
+            }
+
+            handleSubmit(e) {
+                e.preventDefault();
+
+                // Hide any existing success message
+                this.successMessage.style.display = 'none';
+
+                // Validate all fields
+                const isShortNameValid = this.validateShortName();
+                const isFullNameValid = this.validateFullName();
+                const isDescriptionValid = this.validateDescription();
+                const isPhotosValid = this.validatePhotos();
+                const isAmountValid = this.validateAmount();
+                const isTypeValid = this.validateType();
+
+                const allValid = isShortNameValid && isFullNameValid && isDescriptionValid &&
+                    isPhotosValid && isAmountValid && isTypeValid;
+
+                if (allValid) {
+                    // Simulate service creation process
+                    this.serviceBtn.disabled = true;
+                    this.serviceBtn.textContent = 'Creating Service...';
+
+                    setTimeout(() => {
+                        this.serviceBtn.disabled = false;
+                        this.serviceBtn.textContent = 'Create Service';
+                        this.showSuccess();
+
+                        // In a real application, you would send the data to your server
+                        const formData = new FormData(this.form);
+                        console.log('Service data:', {
+                            shortName: formData.get('shortName'),
+                            fullName: formData.get('fullName'),
+                            description: formData.get('description'),
+                            photos: this.selectedFiles,
+                            amount: formData.get('amount'),
+                            type: formData.get('type')
+                        });
+
+                        // Reset form after successful submission
+                        setTimeout(() => {
+                            this.form.reset();
+                            this.selectedFiles = [];
+                            this.updateFileDisplay();
+                        }, 1000);
+
+                    }, 2000);
+                }
+            }
+        }
+
+
+        // Global variable for file management
+        let serviceValidator;
+
+        // Initialize the validator when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            serviceValidator = new ServiceValidator();
+        });
+    </script>
+</body>
+
+</html>

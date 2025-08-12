@@ -7,6 +7,7 @@ router.get('/getall', servicesController.getAllServices);
 
 router.get('/getone', servicesController.getOneService);
 
+router.get('/create', servicesController.createNewServiceForm);
 router.post('/create', servicesController.createNewService);
 
 router.put('/update', servicesController.updateService);
