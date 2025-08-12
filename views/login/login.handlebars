@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e1e1;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group.error input {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .success-message {
+            background: #2ecc71;
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+            text-align: center;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Welcome Back</h1>
+            <p>Please sign in to your account</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            Login successful! Welcome back.
+        </div>
+
+        <form id="loginForm" novalidate>
+            <div class="form-group" id="emailGroup">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+                <div class="error-message" id="emailError"></div>
+            </div>
+
+            <div class="form-group" id="passwordGroup">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">
+                Sign In
+            </button>
+        </form>
+
+        <div class="forgot-password">
+            <a href="#" onclick="alert('Forgot password functionality would go here')">
+                Forgot your password?
+            </a>
+        </div>
+
+        <div class="forgot-password">
+            <a href="/signup">
+                Create Account - Signup
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        class LoginValidator {
+            constructor() {
+                this.form = document.getElementById('loginForm');
+                this.emailInput = document.getElementById('email');
+                this.passwordInput = document.getElementById('password');
+                this.loginBtn = document.getElementById('loginBtn');
+                this.successMessage = document.getElementById('successMessage');
+
+                this.initEventListeners();
+            }
+
+            initEventListeners() {
+                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+                this.emailInput.addEventListener('blur', () => this.validateEmail());
+                this.passwordInput.addEventListener('blur', () => this.validatePassword());
+                this.emailInput.addEventListener('input', () => this.clearError('email'));
+                this.passwordInput.addEventListener('input', () => this.clearError('password'));
+            }
+
+            validateEmail() {
+                const email = this.emailInput.value.trim();
+                const emailGroup = document.getElementById('emailGroup');
+                const emailError = document.getElementById('emailError');
+
+                // Check if email is empty
+                if (!email) {
+                    this.showError('email', 'Email is required');
+                    return false;
+                }
+
+                // Check email format
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    this.showError('email', 'Please enter a valid email address');
+                    return false;
+                }
+
+                this.clearError('email');
+                return true;
+            }
+
+            validatePassword() {
+                const password = this.passwordInput.value;
+
+                if (!password) {
+                    this.showError('password', 'Password is required');
+                    return false;
+                }
+
+                if (password.length < 6) {
+                    this.showError('password', 'Password must be at least 6 characters');
+                    return false;
+                }
+
+                this.clearError('password');
+                return true;
+            }
+
+            showError(field, message) {
+                const group = document.getElementById(`${field}Group`);
+                const error = document.getElementById(`${field}Error`);
+
+                group.classList.add('error');
+                error.textContent = message;
+            }
+
+            clearError(field) {
+                const group = document.getElementById(`${field}Group`);
+                const error = document.getElementById(`${field}Error`);
+
+                group.classList.remove('error');
+                error.textContent = '';
+            }
+
+            showSuccess() {
+                this.successMessage.style.display = 'block';
+                setTimeout(() => {
+                    this.successMessage.style.display = 'none';
+                }, 3000);
+            }
+
+            handleSubmit(e) {
+                e.preventDefault();
+
+                // Hide any existing success message
+                this.successMessage.style.display = 'none';
+
+                // Validate all fields
+                const isEmailValid = this.validateEmail();
+                const isPasswordValid = this.validatePassword();
+
+                if (isEmailValid && isPasswordValid) {
+                    // Simulate login process
+                    this.loginBtn.disabled = true;
+                    this.loginBtn.textContent = 'Signing In...';
+
+                    setTimeout(() => {
+                        this.loginBtn.disabled = false;
+                        this.loginBtn.textContent = 'Sign In';
+                        this.showSuccess();
+
+                        // In a real application, you would send the data to your server
+                        console.log('Login data:', {
+                            email: this.emailInput.value,
+                            password: this.passwordInput.value
+                        });
+
+                        // Reset form after successful submission
+                        setTimeout(() => {
+                            this.form.reset();
+                        }, 1000);
+
+                    }, 1500);
+                }
+            }
+        }
+
+        // Initialize the validator when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new LoginValidator();
+        });
+    </script>
+</body>
+
+</html>

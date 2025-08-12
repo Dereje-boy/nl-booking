@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .signup-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .signup-header h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .signup-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.half {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group label.optional::after {
+            content: " (optional)";
+            color: #999;
+            font-weight: normal;
+            font-size: 0.85rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e1e1;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input[type="file"] {
+            padding: 0.5rem;
+            background: #f9f9f9;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group.error input {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-display {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .file-preview {
+            max-width: 60px;
+            max-height: 60px;
+            border-radius: 5px;
+            object-fit: cover;
+            border: 2px solid #e1e1e1;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .signup-btn:active {
+            transform: translateY(0);
+        }
+
+        .signup-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .success-message {
+            background: #2ecc71;
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+            text-align: center;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-group.half {
+                margin-bottom: 1.5rem;
+            }
+
+            .signup-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1>Create Account</h1>
+            <p>Join us today and get started</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            Account created successfully! Welcome aboard.
+        </div>
+
+        <form id="signupForm" novalidate>
+            <div class="form-row">
+                <div class="form-group half" id="firstnameGroup">
+                    <label for="firstname">First Name</label>
+                    <input type="text" id="firstname" name="firstname" required>
+                    <div class="error-message" id="firstnameError"></div>
+                </div>
+
+                <div class="form-group half" id="lastnameGroup">
+                    <label for="lastname" class="optional">Last Name</label>
+                    <input type="text" id="lastname" name="lastname">
+                    <div class="error-message" id="lastnameError"></div>
+                </div>
+            </div>
+
+            <div class="form-group" id="emailGroup">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+                <div class="error-message" id="emailError"></div>
+            </div>
+
+            <div class="form-group" id="passwordGroup">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+
+            <div class="form-group" id="confirmPasswordGroup">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <div class="error-message" id="confirmPasswordError"></div>
+            </div>
+
+            <div class="form-group" id="profilePictureGroup">
+                <label for="profilePicture" class="optional">Profile Picture</label>
+                <input type="file" id="profilePicture" name="profilePicture" accept=".jpg,.jpeg,.png">
+                <div class="file-input-display" id="fileDisplay"></div>
+                <div class="error-message" id="profilePictureError"></div>
+            </div>
+
+            <div class="form-group" id="phoneGroup">
+                <label for="phone" class="optional">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="e.g., +1 234 567 8900">
+                <div class="error-message" id="phoneError"></div>
+            </div>
+
+            <button type="submit" class="signup-btn" id="signupBtn">
+                Create Account
+            </button>
+        </form>
+
+        <div class="login-link">
+            <a href="/login">
+                Already have an account? Sign in
+            </a>
+        </div>
+    </div>
+
+    <script>
+        class SignupValidator {
+            constructor() {
+                this.form = document.getElementById('signupForm');
+                this.firstnameInput = document.getElementById('firstname');
+                this.lastnameInput = document.getElementById('lastname');
+                this.emailInput = document.getElementById('email');
+                this.passwordInput = document.getElementById('password');
+                this.confirmPasswordInput = document.getElementById('confirmPassword');
+                this.profilePictureInput = document.getElementById('profilePicture');
+                this.phoneInput = document.getElementById('phone');
+                this.signupBtn = document.getElementById('signupBtn');
+                this.successMessage = document.getElementById('successMessage');
+                this.fileDisplay = document.getElementById('fileDisplay');
+
+                this.initEventListeners();
+            }
+
+            initEventListeners() {
+                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+
+                // Validation on blur
+                this.firstnameInput.addEventListener('blur', () => this.validateFirstname());
+                this.lastnameInput.addEventListener('blur', () => this.validateLastname());
+                this.emailInput.addEventListener('blur', () => this.validateEmail());
+                this.passwordInput.addEventListener('blur', () => this.validatePassword());
+                this.confirmPasswordInput.addEventListener('blur', () => this.validateConfirmPassword());
+                this.profilePictureInput.addEventListener('change', () => this.validateProfilePicture());
+                this.phoneInput.addEventListener('blur', () => this.validatePhone());
+
+                // Clear errors on input
+                this.firstnameInput.addEventListener('input', () => this.clearError('firstname'));
+                this.lastnameInput.addEventListener('input', () => this.clearError('lastname'));
+                this.emailInput.addEventListener('input', () => this.clearError('email'));
+                this.passwordInput.addEventListener('input', () => this.clearError('password'));
+                this.confirmPasswordInput.addEventListener('input', () => this.clearError('confirmPassword'));
+                this.phoneInput.addEventListener('input', () => this.clearError('phone'));
+            }
+
+            validateFirstname() {
+                const firstname = this.firstnameInput.value.trim();
+
+                if (!firstname) {
+                    this.showError('firstname', 'First name is required');
+                    return false;
+                }
+
+                if (firstname.length < 3) {
+                    this.showError('firstname', 'First name must be at least 3 characters');
+                    return false;
+                }
+
+                this.clearError('firstname');
+                return true;
+            }
+
+            validateLastname() {
+                const lastname = this.lastnameInput.value.trim();
+
+                // Last name is now optional, so if empty, it's valid
+                if (!lastname) {
+                    this.clearError('lastname');
+                    return true;
+                }
+
+                this.clearError('lastname');
+                return true;
+            }
+
+            validateEmail() {
+                const email = this.emailInput.value.trim();
+
+                if (!email) {
+                    this.showError('email', 'Email is required');
+                    return false;
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    this.showError('email', 'Please enter a valid email address');
+                    return false;
+                }
+
+                this.clearError('email');
+                return true;
+            }
+
+            validatePassword() {
+                const password = this.passwordInput.value;
+
+                if (!password) {
+                    this.showError('password', 'Password is required');
+                    return false;
+                }
+
+                if (password.length < 6) {
+                    this.showError('password', 'Password must be at least 6 characters');
+                    return false;
+                }
+
+                this.clearError('password');
+                return true;
+            }
+
+            validateConfirmPassword() {
+                const password = this.passwordInput.value;
+                const confirmPassword = this.confirmPasswordInput.value;
+
+                if (!confirmPassword) {
+                    this.showError('confirmPassword', 'Please confirm your password');
+                    return false;
+                }
+
+                if (password !== confirmPassword) {
+                    this.showError('confirmPassword', 'Passwords do not match');
+                    return false;
+                }
+
+                this.clearError('confirmPassword');
+                return true;
+            }
+
+            validateProfilePicture() {
+                const file = this.profilePictureInput.files[0];
+
+                if (file) {
+                    // Check if it's a valid image type (jpeg, jpg, png only)
+                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                    if (!allowedTypes.includes(file.type)) {
+                        this.showError('profilePicture', 'Please select a JPEG or PNG image file');
+                        this.fileDisplay.innerHTML = '';
+                        return false;
+                    }
+
+                    // Check file size (5MB max)
+                    if (file.size > 5 * 1024 * 1024) {
+                        this.showError('profilePicture', 'Image size must be less than 5MB');
+                        this.fileDisplay.innerHTML = '';
+                        return false;
+                    }
+
+                    // Show preview
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.fileDisplay.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview" class="file-preview">
+                            <span>${file.name} (${(file.size / 1024).toFixed(1)} KB)</span>
+                        `;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    this.fileDisplay.innerHTML = '';
+                }
+
+                this.clearError('profilePicture');
+                return true;
+            }
+
+            validatePhone() {
+                const phone = this.phoneInput.value.trim();
+
+                // Phone is optional, so if empty, it's valid
+                if (!phone) {
+                    this.clearError('phone');
+                    return true;
+                }
+
+                // Basic phone validation (allows various formats)
+                const phoneRegex = /^[\+]?[\d\s\-\(\)]{10,}$/;
+                if (!phoneRegex.test(phone)) {
+                    this.showError('phone', 'Please enter a valid phone number');
+                    return false;
+                }
+
+                this.clearError('phone');
+                return true;
+            }
+
+            showError(field, message) {
+                const group = document.getElementById(`${field}Group`);
+                const error = document.getElementById(`${field}Error`);
+
+                group.classList.add('error');
+                error.textContent = message;
+            }
+
+            clearError(field) {
+                const group = document.getElementById(`${field}Group`);
+                const error = document.getElementById(`${field}Error`);
+
+                group.classList.remove('error');
+                error.textContent = '';
+            }
+
+            showSuccess() {
+                this.successMessage.style.display = 'block';
+                setTimeout(() => {
+                    this.successMessage.style.display = 'none';
+                }, 3000);
+            }
+
+            handleSubmit(e) {
+                e.preventDefault();
+
+                // Hide any existing success message
+                this.successMessage.style.display = 'none';
+
+                // Validate all required fields
+                const isFirstnameValid = this.validateFirstname();
+                const isLastnameValid = this.validateLastname();
+                const isEmailValid = this.validateEmail();
+                const isPasswordValid = this.validatePassword();
+                const isConfirmPasswordValid = this.validateConfirmPassword();
+                const isProfilePictureValid = this.validateProfilePicture();
+                const isPhoneValid = this.validatePhone();
+
+                const allValid = isFirstnameValid && isLastnameValid && isEmailValid &&
+                    isPasswordValid && isConfirmPasswordValid && isProfilePictureValid && isPhoneValid;
+
+                if (allValid) {
+                    // Simulate signup process
+                    this.signupBtn.disabled = true;
+                    this.signupBtn.textContent = 'Creating Account...';
+
+                    setTimeout(() => {
+                        this.signupBtn.disabled = false;
+                        this.signupBtn.textContent = 'Create Account';
+                        this.showSuccess();
+
+                        // In a real application, you would send the data to your server
+                        const formData = new FormData(this.form);
+                        console.log('Signup data:', {
+                            firstname: formData.get('firstname'),
+                            lastname: formData.get('lastname'),
+                            email: formData.get('email'),
+                            password: formData.get('password'),
+                            profilePicture: formData.get('profilePicture'),
+                            phone: formData.get('phone')
+                        });
+
+                        // Reset form after successful submission
+                        setTimeout(() => {
+                            this.form.reset();
+                            this.fileDisplay.innerHTML = '';
+                        }, 1000);
+
+                    }, 2000);
+                }
+            }
+        }
+
+        // Initialize the validator when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new SignupValidator();
+        });
+    </script>
+</body>
+
+</html>

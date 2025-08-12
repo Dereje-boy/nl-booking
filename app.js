@@ -12,6 +12,7 @@ var accountsRouter = require('./routes/accounts');
 var servicesRouter = require('./routes/services');
 var bookingsRouter = require('./routes/bookings');
 var loginRouter = require('./routes/login');
+var signupRouter = require('./routes/signup');
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.use('/api/accounts/', accountsRouter);
 app.use('/api/services/', servicesRouter);
 app.use('/api/bookings/', bookingsRouter);
 app.use('/login/', loginRouter);
+app.use('/signup/', signupRouter);
 
 
 //consuming middlewares
