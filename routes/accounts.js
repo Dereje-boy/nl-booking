@@ -1,28 +1,18 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-router.get('/getall', (req, res) => {
-  res.json({
-    "name": 'Dereje',
-    lastname: 'boy'
-  });
-});
+//importing controllers
+const accountsController = require('../controllers/accounts.controllers');
 
-router.get('/getone', (req, res) => {
-  res.send('one acc info')
-});
+router.get('/getall', accountsController.getAllAccounts);
 
-router.post('/create', (req, res) => {
-  res.send('Acount information created')
-});
+router.get('/getone', accountsController.getOneAccount);
 
-router.put('/update', (req, res) => {
-  res.send('Account inform updated')
-});
+router.post('/create', accountsController.createNewAccount);
 
-router.delete('/delete', (req, res) => {
-  res.send('Account inform deleted')
-});
+router.put('/update', accountsController.updateAccount);
+
+router.delete('/delete', accountsController.deleteAccount);
 
 
 module.exports = router;
