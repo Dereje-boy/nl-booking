@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Service</title>
+    <title>Update Service</title>
     <style>
         * {
             margin: 0;
@@ -290,44 +290,63 @@
 <body>
     <div class="service-container">
         <div class="service-header">
-            <h1>Create Service</h1>
-            <p>Add a new service to your listing</p>
+            <h1>Update Service</h1>
         </div>
 
         <div class="success-message" id="successMessage">
-            Service created successfully! Your listing is now active.
+            Service updated successfully!
         </div>
 
         <form id="serviceForm" novalidate>
             <div class="form-group" id="shortNameGroup">
                 <label for="shortName">Service Short Name (Title)</label>
-                <input type="text" id="shortName" name="shortName" required placeholder="Enter service name">
+                <input type="text" id="shortName" name="shortName" required placeholder="Enter service name"
+                    value="{{shortName}}">
                 <div class="error-message" id="shortNameError"></div>
             </div>
 
             <div class="form-group" id="fullNameGroup">
                 <label for="fullName" class="optional">Full Service Name</label>
-                <input type="text" id="fullName" name="fullName" placeholder="Enter full service name">
+                <input type="text" id="fullName" name="fullName" placeholder="Enter full service name"
+                    value="{{fullName}}">
                 <div class="error-message" id="fullNameError"></div>
             </div>
 
             <div class="form-group" id="descriptionGroup">
                 <label for="description" class="optional">Description</label>
-                <textarea id="description" name="description" placeholder="Describe your service..."></textarea>
+                <textarea id="description" name="description"
+                    placeholder="Describe your service...">{{description}}</textarea>
                 <div class="error-message" id="descriptionError"></div>
             </div>
 
             <div class="form-group" id="photosGroup">
                 <label for="photos" class="optional">Service Photos</label>
                 <input type="file" id="photos" name="photos" multiple accept=".jpg,.jpeg,.png">
-                <div class="file-input-display" id="fileDisplay"></div>
+                <div class="file-input-display" id="fileDisplay">
+                    {{#each photos}}
+                    <div class="file-item">
+                        <img src="{{this}}" alt="Preview" class="file-preview">
+                        <div class="file-info">
+                            <div>{{this}}</div>
+                            <div></div>
+                        </div>
+                        <button type="button" class="file-remove"
+                            onclick=`serviceValidator.removeFile(${index})`>Remove</button>
+                    </div>
+                    {{/each}}
+                </div>
                 <div class="error-message" id="photosError"></div>
             </div>
 
             <div class="form-group" id="amountGroup">
                 <label for="amount">Amount (Price)</label>
-                <input type="number" id="amount" name="amount" value="1" min="1" step="1" required>
+                <input type="number" id="amount" name="amount" value="{{amount}}" min="1" step="1" required>
                 <div class="error-message" id="amountError"></div>
+            </div>
+
+            <div class="form-group" id="typeGroup">
+                <label for="type">Current Service Type</label>
+                <label for="type">{{type}}</label>
             </div>
 
             <div class="form-group" id="typeGroup">
@@ -344,7 +363,7 @@
             </div>
 
             <button type="submit" class="service-btn" id="serviceBtn">
-                Create Service
+                Update Service
             </button>
         </form>
 
@@ -570,13 +589,12 @@
                 const isTypeValid = this.validateType();
 
                 const allValid = isShortNameValid && isFullNameValid && isDescriptionValid &&
-                    isPhotosValid && isAmountValid && isTypeValid;
+                    isPhotosValid && isAmountValid;
 
                 if (allValid) {
                     // Simulate service creation process
                     this.serviceBtn.disabled = true;
-                    this.serviceBtn.textContent = 'Creating Service...';
-
+                    this.serviceBtn.textContent = 'Updating Service...';
 
                     const formData = new FormData(this.form);
                     console.log('Service data:', {
@@ -588,11 +606,8 @@
                         type: formData.get('type')
                     });
 
-
-                    // Example: sending JSON data to backend
-                    // Send request with credentials (cookies)
-                    fetch("/api/services/create", {
-                        method: "POST",
+                    fetch("/api/services/update", {
+                        method: "PUT",
                         credentials: "include", // VERY important to send cookies
                         body: formData
                     })
@@ -601,7 +616,7 @@
                             console.log("Server Response:", data);
 
                             this.serviceBtn.disabled = false;
-                            this.serviceBtn.textContent = 'Create Service';
+                            this.serviceBtn.textContent = 'Update Service';
 
                             if (!data) return this.showFail("Not Connected to Server Please Try Again Later");
                             if (data['success']) {
