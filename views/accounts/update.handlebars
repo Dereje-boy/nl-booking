@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Update Account</title>
     <style>
         * {
             margin: 0;
@@ -222,62 +222,63 @@
 <body>
     <div class="signup-container">
         <div class="signup-header">
-            <h1>Create Customer Account</h1>
-            <p>Join us today and get started</p>
+            <h1>Update Account</h1>
         </div>
 
         <div class="success-message" id="successMessage">
-            Account created successfully! Welcome aboard.
+            Account updated successfully!
         </div>
 
         <form id="signupForm" novalidate>
             <div class="form-row">
                 <div class="form-group half" id="firstnameGroup">
                     <label for="firstname">First Name</label>
-                    <input type="text" id="firstname" name="firstname" required>
+                    <input type="text" id="firstname" name="firstname" required value="{{firstname}}">
                     <div class="error-message" id="firstnameError"></div>
                 </div>
 
                 <div class="form-group half" id="lastnameGroup">
                     <label for="lastname" class="optional">Last Name</label>
-                    <input type="text" id="lastname" name="lastname">
+                    <input type="text" id="lastname" name="lastname" value="{{lastname}}">
                     <div class="error-message" id="lastnameError"></div>
                 </div>
             </div>
 
             <div class="form-group" id="emailGroup">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" required value="{{email}}">
                 <div class="error-message" id="emailError"></div>
             </div>
 
             <div class="form-group" id="passwordGroup">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" required value="{{password}}">
                 <div class="error-message" id="passwordError"></div>
             </div>
 
             <div class="form-group" id="confirmPasswordGroup">
                 <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <input type="password" id="confirmPassword" name="confirmPassword" required value="{{password}}">
                 <div class="error-message" id="confirmPasswordError"></div>
             </div>
 
             <div class="form-group" id="profilePictureGroup">
                 <label for="profilePicture" class="optional">Profile Picture</label>
                 <input type="file" id="profilePicture" name="profilePicture" accept=".jpg,.jpeg,.png">
-                <div class="file-input-display" id="fileDisplay"></div>
+                <div class="file-input-display" id="fileDisplay">
+                    <img class="file-preview" id="profile" src="{{pp_path}}" alt="">
+                </div>
                 <div class="error-message" id="profilePictureError"></div>
             </div>
 
             <div class="form-group" id="phoneGroup">
                 <label for="phone" class="optional">Phone Number</label>
-                <input type="tel" id="phone" name="phone" placeholder="e.g., +1 234 567 8900">
+                <input type="tel" id="phone" name="phone" placeholder="e.g., +1 234 567 8900" value="{{phone}}">
                 <div class="error-message" id="phoneError"></div>
             </div>
 
             <button type="submit" class="signup-btn" id="signupBtn">
-                Create Account
+                Update Account
             </button>
         </form>
 
@@ -538,8 +539,8 @@
 
                     // Example: sending JSON data to backend
                     // Send request with credentials (cookies)
-                    fetch("/signup", {
-                        method: "POST",
+                    fetch("/api/accounts/update", {
+                        method: "PUT",
                         credentials: "include", // VERY important to send cookies
                         body: formData
                     })

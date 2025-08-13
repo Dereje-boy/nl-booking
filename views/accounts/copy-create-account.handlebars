@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Create New Account</title>
     <style>
         * {
             margin: 0;
@@ -89,13 +89,25 @@
             font-size: 0.85rem;
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 0.75rem;
             border: 2px solid #e1e1e1;
             border-radius: 5px;
             font-size: 1rem;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: white;
+        }
+
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.2em;
+            padding-right: 2.5rem;
         }
 
         .form-group input[type="file"] {
@@ -103,13 +115,15 @@
             background: #f9f9f9;
         }
 
-        .form-group input:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .form-group.error input {
+        .form-group.error input,
+        .form-group.error select {
             border-color: #e74c3c;
             box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
         }
@@ -222,7 +236,7 @@
 <body>
     <div class="signup-container">
         <div class="signup-header">
-            <h1>Create Customer Account</h1>
+            <h1>Create Account</h1>
             <p>Join us today and get started</p>
         </div>
 
@@ -261,6 +275,16 @@
                 <label for="confirmPassword">Confirm Password</label>
                 <input type="password" id="confirmPassword" name="confirmPassword" required>
                 <div class="error-message" id="confirmPasswordError"></div>
+            </div>
+
+            <div class="form-group" id="userTypeGroup">
+                <label for="userType">User Type</label>
+                <select id="userType" name="userType" required>
+                    <option value="staff" selected>Staff</option>
+                    <option value="customer">Customer</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <div class="error-message" id="userTypeError"></div>
             </div>
 
             <div class="form-group" id="profilePictureGroup">
@@ -302,6 +326,7 @@
                 this.emailInput = document.getElementById('email');
                 this.passwordInput = document.getElementById('password');
                 this.confirmPasswordInput = document.getElementById('confirmPassword');
+                this.userTypeSelect = document.getElementById('userType');
                 this.profilePictureInput = document.getElementById('profilePicture');
                 this.phoneInput = document.getElementById('phone');
                 this.signupBtn = document.getElementById('signupBtn');
@@ -320,6 +345,7 @@
                 this.emailInput.addEventListener('blur', () => this.validateEmail());
                 this.passwordInput.addEventListener('blur', () => this.validatePassword());
                 this.confirmPasswordInput.addEventListener('blur', () => this.validateConfirmPassword());
+                this.userTypeSelect.addEventListener('blur', () => this.validateUserType());
                 this.profilePictureInput.addEventListener('change', () => this.validateProfilePicture());
                 this.phoneInput.addEventListener('blur', () => this.validatePhone());
 
@@ -329,6 +355,7 @@
                 this.emailInput.addEventListener('input', () => this.clearError('email'));
                 this.passwordInput.addEventListener('input', () => this.clearError('password'));
                 this.confirmPasswordInput.addEventListener('input', () => this.clearError('confirmPassword'));
+                this.userTypeSelect.addEventListener('change', () => this.clearError('userType'));
                 this.phoneInput.addEventListener('input', () => this.clearError('phone'));
             }
 
@@ -415,6 +442,18 @@
                 return true;
             }
 
+            validateUserType() {
+                const userType = this.userTypeSelect.value;
+
+                if (!userType) {
+                    this.showError('userType', 'Please select a user type');
+                    return false;
+                }
+
+                this.clearError('userType');
+                return true;
+            }
+
             validateProfilePicture() {
                 const file = this.profilePictureInput.files[0];
 
@@ -493,14 +532,6 @@
                     this.successMessage.style.display = 'none';
                 }, 3000);
             }
-            showFail(message) {
-                this.successMessage.style.display = 'block';
-                this.successMessage.style.backgroundColor = 'red';
-                this.successMessage.textContent = message ? message : "Unable to create the account try again later";
-                setTimeout(() => {
-                    this.successMessage.style.display = 'none';
-                }, 3000);
-            }
 
             handleSubmit(e) {
                 e.preventDefault();
@@ -514,68 +545,32 @@
                 const isEmailValid = this.validateEmail();
                 const isPasswordValid = this.validatePassword();
                 const isConfirmPasswordValid = this.validateConfirmPassword();
+                const isUserTypeValid = this.validateUserType();
                 const isProfilePictureValid = this.validateProfilePicture();
                 const isPhoneValid = this.validatePhone();
 
                 const allValid = isFirstnameValid && isLastnameValid && isEmailValid &&
-                    isPasswordValid && isConfirmPasswordValid && isProfilePictureValid && isPhoneValid;
+                    isPasswordValid && isConfirmPasswordValid && isUserTypeValid &&
+                    isProfilePictureValid && isPhoneValid;
 
                 if (allValid) {
                     // Simulate signup process
                     this.signupBtn.disabled = true;
                     this.signupBtn.textContent = 'Creating Account...';
 
-                    //send payload to backend here
-                    const formData = new FormData(this.form);
-                    console.log('Signup data:', {
-                        firstname: formData.get('firstname'),
-                        lastname: formData.get('lastname'),
-                        email: formData.get('email'),
-                        password: formData.get('password'),
-                        profilePicture: formData.get('profilePicture'),
-                        phone: formData.get('phone')
-                    });
-
-                    // Example: sending JSON data to backend
-                    // Send request with credentials (cookies)
-                    fetch("/signup", {
-                        method: "POST",
-                        credentials: "include", // VERY important to send cookies
-                        body: formData
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            console.log("Server Response:", data);
-
-                            this.signupBtn.disabled = false;
-                            this.signupBtn.textContent = 'Create Account';
-                            this.form.reset();
-                            this.fileDisplay.innerHTML = '';
-
-                            if (!data) return
-                            if (data['success']) {
-                                //account created successfully
-                                this.showSuccess();
-                            } else {
-                                this.showFail(data['message']);
-                            }
-                        })
-                        .catch(err => {
-                            console.error("Error:", err)
-                            this.showFail(err);
-                        });
-
-                    /**setTimeout(() => {
+                    setTimeout(() => {
                         this.signupBtn.disabled = false;
                         this.signupBtn.textContent = 'Create Account';
                         this.showSuccess();
 
+                        // In a real application, you would send the data to your server
                         const formData = new FormData(this.form);
                         console.log('Signup data:', {
                             firstname: formData.get('firstname'),
                             lastname: formData.get('lastname'),
                             email: formData.get('email'),
                             password: formData.get('password'),
+                            userType: formData.get('userType'),
                             profilePicture: formData.get('profilePicture'),
                             phone: formData.get('phone')
                         });
@@ -584,10 +579,11 @@
                         setTimeout(() => {
                             this.form.reset();
                             this.fileDisplay.innerHTML = '';
+                            // Reset userType to default value after form reset
+                            this.userTypeSelect.value = 'staff';
                         }, 1000);
 
                     }, 2000);
-                **/
                 }
             }
         }

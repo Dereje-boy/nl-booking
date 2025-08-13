@@ -14,6 +14,7 @@ var bookingsRouter = require('./routes/bookings');
 var loginRouter = require('./routes/login');
 var signupRouter = require('./routes/signup');
 var resetPasswordRouter = require('./routes/reset-password');
+var logoutRouter = require('./routes/logout');
 
 
 const app = express();
@@ -23,6 +24,7 @@ app.use('/api/accounts/', accountsRouter);
 app.use('/api/services/', servicesRouter);
 app.use('/api/bookings/', bookingsRouter);
 app.use('/login/', loginRouter);
+app.use('/logout/', logoutRouter);
 app.use('/signup/', signupRouter);
 app.use('/request-reset-password/', resetPasswordRouter);
 
@@ -42,6 +44,7 @@ app.get('/', (req, res) => {
     // throw new Error('Test 500 error');
     res.render('home');
 });
+
 app.get('/dashboard', (req, res) => {
     res.render('dashboard', { title: 'Dashboard', layout: false });
 });
