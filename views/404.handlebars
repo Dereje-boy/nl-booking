@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - 404</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .error-container {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-icon {
+            font-size: 6rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .error-header h1 {
+            color: #333;
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .error-header h2 {
+            color: #555;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .error-description {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .additional-links {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e1e1e1;
+        }
+
+        .additional-links h3 {
+            color: #555;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .link-item {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .link-item:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.2);
+            text-decoration: none;
+        }
+
+        .error-details {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .error-code {
+            font-family: 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .error-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .error-header h1 {
+                font-size: 3rem;
+            }
+
+            .error-header h2 {
+                font-size: 1.25rem;
+            }
+
+            .error-icon {
+                font-size: 4rem;
+            }
+
+            .action-buttons {
+                gap: 0.75rem;
+            }
+
+            .link-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .error-container {
+                padding: 1.5rem;
+            }
+
+            .error-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="error-container">
+        <div class="error-icon">🔍</div>
+
+        <div class="error-header">
+            <h1>404</h1>
+            <h2>Page Not Found</h2>
+        </div>
+
+        <div class="error-description">
+            <p>Oops! The page you're looking for seems to have wandered off into the digital wilderness. Don't worry, it
+                happens to the best of us!</p>
+        </div>
+
+        <div class="action-buttons">
+            <a href="/" class="btn btn-primary">
+                🏠 Take Me Home
+            </a>
+            <a href="/login" class="btn btn-secondary">
+                ← Go to Login
+            </a>
+        </div>
+
+        <div class="error-details">
+            <p><strong>Error Details:</strong></p>
+            <p>Status Code: <span class="error-code">404 Not Found</span></p>
+            <p>Requested URL: <span class="error-code" id="currentUrl"></span></p>
+            <p>Time: <span class="error-code" id="currentTime"></span></p>
+        </div>
+    </div>
+
+    <script>
+        // Display current URL and time
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('currentUrl').textContent = window.location.pathname;
+            document.getElementById('currentTime').textContent = new Date().toLocaleString();
+        });
+
+        // Navigation functions
+        function navigateToHome() {
+            alert('Navigating to homepage...\nIn a real app, this would go to /');
+            console.log('Navigate to: /');
+        }
+
+        function navigateToLogin() {
+            alert('Navigating to login page...\nIn a real app, this would go to /login');
+            console.log('Navigate to: /login');
+        }
+
+        function navigateToSignup() {
+            alert('Navigating to signup page...\nIn a real app, this would go to /signup');
+            console.log('Navigate to: /signup');
+        }
+
+        function navigateToServices() {
+            alert('Navigating to services page...\nIn a real app, this would go to /services');
+            console.log('Navigate to: /services');
+        }
+
+        function navigateToContact() {
+            alert('Navigating to contact page...\nIn a real app, this would go to /contact');
+            console.log('Navigate to: /contact');
+        }
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                navigateToHome();
+            }
+        }
+
+        // Add some interactive elements
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click effect to the error icon
+            const errorIcon = document.querySelector('.error-icon');
+            errorIcon.addEventListener('click', () => {
+                errorIcon.style.transform = 'scale(1.2) rotate(360deg)';
+                errorIcon.style.transition = 'transform 0.5s ease';
+                setTimeout(() => {
+                    errorIcon.style.transform = '';
+                }, 500);
+            });
+
+            // Add easter egg: Konami code
+            let konamiCode = [];
+            const konami = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // ↑↑↓↓←→←→BA
+
+            document.addEventListener('keydown', (e) => {
+                konamiCode.push(e.keyCode);
+                if (konamiCode.length > konami.length) {
+                    konamiCode.shift();
+                }
+
+                if (konamiCode.length === konami.length &&
+                    konamiCode.every((code, index) => code === konami[index])) {
+
+                    // Easter egg activated!
+                    document.body.style.animation = 'rainbow 2s infinite';
+                    setTimeout(() => {
+                        document.body.style.animation = '';
+                        alert('🎉 Easter egg activated! You found the secret code!');
+                    }, 2000);
+                }
+            });
+        });
+
+        // Add rainbow animation for easter egg
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rainbow {
+                0% { filter: hue-rotate(0deg); }
+                25% { filter: hue-rotate(90deg); }
+                50% { filter: hue-rotate(180deg); }
+                75% { filter: hue-rotate(270deg); }
+                100% { filter: hue-rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>

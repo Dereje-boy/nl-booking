@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Error - 500</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .error-container {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-icon {
+            font-size: 6rem;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .error-header h1 {
+            color: #333;
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .error-header h2 {
+            color: #555;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .error-description {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .error-details {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .error-code {
+            font-family: 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .troubleshooting {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e1e1e1;
+            text-align: left;
+        }
+
+        .troubleshooting h3 {
+            color: #555;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .troubleshooting ul {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-left: 1.5rem;
+        }
+
+        .troubleshooting li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .error-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .error-header h1 {
+                font-size: 3rem;
+            }
+
+            .error-header h2 {
+                font-size: 1.25rem;
+            }
+
+            .error-icon {
+                font-size: 4rem;
+            }
+
+            .action-buttons {
+                gap: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .error-container {
+                padding: 1.5rem;
+            }
+
+            .error-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="error-container">
+        <div class="error-icon">⚠️</div>
+
+        <div class="error-header">
+            <h1>500</h1>
+            <h2>Internal Server Error</h2>
+        </div>
+
+        <div class="error-description">
+            <p>Something went wrong on our end. Our servers are experiencing technical difficulties and we're working to
+                fix the issue as quickly as possible.</p>
+        </div>
+
+        <div class="action-buttons">
+            <a href="/" class="btn btn-primary">
+                🏠 Take Me Home
+            </a>
+            <a href="/login" class="btn btn-secondary">
+                👤 Go to Login
+            </a>
+        </div>
+
+        <div class="troubleshooting">
+            <h3>What you can try:</h3>
+            <ul>
+                <li>Refresh the page in a few minutes</li>
+                <li>Check if other parts of the site are working</li>
+                <li>Try again later as we work to resolve the issue</li>
+                <li>Contact support if the problem persists</li>
+            </ul>
+        </div>
+
+        <div class="error-details">
+            <p><strong>Error Details:</strong></p>
+            <p>Status Code: <span class="error-code">500 Internal Server Error</span></p>
+            <p>Requested URL: <span class="error-code" id="currentUrl"></span></p>
+            <p>Time: <span class="error-code" id="currentTime"></span></p>
+        </div>
+    </div>
+
+    <script>
+        // Display current URL, time, and generate error ID
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('currentUrl').textContent = window.location.pathname;
+            document.getElementById('currentTime').textContent = new Date().toLocaleString();
+
+        });
+
+        // Add interactive element to the error icon
+        document.addEventListener('DOMContentLoaded', () => {
+            const errorIcon = document.querySelector('.error-icon');
+            errorIcon.addEventListener('click', () => {
+                errorIcon.style.transform = 'scale(1.2) rotate(10deg)';
+                errorIcon.style.transition = 'transform 0.3s ease';
+                setTimeout(() => {
+                    errorIcon.style.transform = '';
+                }, 300);
+            });
+        });
+
+    </script>
+</body>
+
+</html>

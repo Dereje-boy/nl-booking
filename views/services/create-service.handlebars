@@ -300,7 +300,7 @@
 
         <form id="serviceForm" novalidate>
             <div class="form-group" id="shortNameGroup">
-                <label for="shortName">Service Short Name</label>
+                <label for="shortName">Service Short Name (Title)</label>
                 <input type="text" id="shortName" name="shortName" required placeholder="Enter service name">
                 <div class="error-message" id="shortNameError"></div>
             </div>
@@ -401,7 +401,7 @@
                 const shortName = this.shortNameInput.value.trim();
 
                 if (!shortName) {
-                    this.showError('shortName', 'Service short name is required');
+                    this.showError('shortName', 'Service short name or Title is required');
                     return false;
                 }
 

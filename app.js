@@ -39,7 +39,21 @@ app.set('view engine', 'handlebars');
 app.set('views', './views');
 
 app.get('/', (req, res) => {
+    // throw new Error('Test 500 error');
     res.render('home');
+});
+app.get('/dashboard', (req, res) => {
+    res.render('dashboard', { title: 'Dashboard', layout: false });
+});
+
+// 404 handler middleware (must be last)
+app.use((req, res, next) => {
+    res.status(404).render('404', { title: 'Page Not Found', layout: false });
+});
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).render('500', { title: 'Server Error', message: 'Something went wrong!', layout: false });
 });
 
 app.listen(3000, () => {
