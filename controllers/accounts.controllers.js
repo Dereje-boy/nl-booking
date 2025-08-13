@@ -62,8 +62,9 @@ exports.updateAccount = async (req, res) => {
     })
 }
 
-exports.deleteAccount = async (req, res) => {
-    console.log("delete account using delete http method with req.body")
+exports.deleteAccount = (req, res) => {
+    console.log("delete account using put http method with req.body")
+    console.log('Text fields:', req.body);
     res.json({
         success: true,
         reason: null,

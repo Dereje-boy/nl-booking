@@ -29,7 +29,6 @@ router.post('/create', upload.single('profilePicture'), accountsController.creat
 router.get('/update', accountsController.showUpdateAccountForm);
 router.put('/update', upload.single('profilePicture'), accountsController.updateAccount);
 
-router.delete('/delete', accountsController.deleteAccount);
-
+router.post('/delete', accountsController.deleteAccount);
 
 module.exports = router;
