@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Not Found - 404</title>
+    <title>Account Not Found - 404</title>
     <style>
         * {
             margin: 0;
@@ -239,19 +239,19 @@
 
         <div class="error-header">
             <h1>404</h1>
-            <h2>Page Not Found</h2>
+            <h2>{{message}}</h2>
         </div>
 
         <div class="error-description">
-            <p>Oops! The page you're looking for seems not found. Please Go back to home.</p>
+            <p>Oops! The account you're looking for seems NOT FOUND!</p>
         </div>
 
         <div class="action-buttons">
             <a href="/" class="btn btn-primary">
                 🏠 Take Me Home
             </a>
-            <a href="/login" class="btn btn-secondary">
-                ← Go to Login
+            <a href="/dashboard" class="btn btn-secondary">
+                ← Go to Dashboard
             </a>
         </div>
 
@@ -269,6 +269,58 @@
             document.getElementById('currentUrl').textContent = window.location.pathname;
             document.getElementById('currentTime').textContent = new Date().toLocaleString();
         });
+
+        //useless codes
+        /**
+         // Add some interactive elements
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click effect to the error icon
+            const errorIcon = document.querySelector('.error-icon');
+            errorIcon.addEventListener('click', () => {
+                errorIcon.style.transform = 'scale(1.2) rotate(360deg)';
+                errorIcon.style.transition = 'transform 0.5s ease';
+                setTimeout(() => {
+                    errorIcon.style.transform = '';
+                }, 500);
+            });
+
+            // Add easter egg: Konami code
+            let konamiCode = [];
+            const konami = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // ↑↑↓↓←→←→BA
+
+            document.addEventListener('keydown', (e) => {
+                konamiCode.push(e.keyCode);
+                if (konamiCode.length > konami.length) {
+                    konamiCode.shift();
+                }
+
+                if (konamiCode.length === konami.length &&
+                    konamiCode.every((code, index) => code === konami[index])) {
+
+                    // Easter egg activated!
+                    document.body.style.animation = 'rainbow 2s infinite';
+                    setTimeout(() => {
+                        document.body.style.animation = '';
+                        alert('🎉 Easter egg activated! You found the secret code!');
+                    }, 2000);
+                }
+            });
+        });
+
+        // Add rainbow animation for easter egg
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rainbow {
+                0% { filter: hue-rotate(0deg); }
+                25% { filter: hue-rotate(90deg); }
+                50% { filter: hue-rotate(180deg); }
+                75% { filter: hue-rotate(270deg); }
+                100% { filter: hue-rotate(360deg); }
+            }
+        `;
+
+        document.head.appendChild(style);
+        **/
     </script>
 </body>
 

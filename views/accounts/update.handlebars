@@ -231,6 +231,13 @@
 
         <form id="signupForm" novalidate>
             <div class="form-row">
+                <div class="form-group">
+                    <label for="id">Account ID :</label>
+                </div>
+                <div class="form-group"><input type="number" value="{{id}}" readonly>
+                </div>
+            </div>
+            <div class="form-row">
                 <div class="form-group half" id="firstnameGroup">
                     <label for="firstname">First Name</label>
                     <input type="text" id="firstname" name="firstname" required value="{{firstname}}">
@@ -266,7 +273,7 @@
                 <label for="profilePicture" class="optional">Profile Picture</label>
                 <input type="file" id="profilePicture" name="profilePicture" accept=".jpg,.jpeg,.png">
                 <div class="file-input-display" id="fileDisplay">
-                    <img class="file-preview" id="profile" src="{{pp_path}}" alt="">
+                    <img class="file-preview" id="profile" src="/uploads/users/{{pp_path}}" alt="">
                 </div>
                 <div class="error-message" id="profilePictureError"></div>
             </div>
@@ -529,6 +536,7 @@
                     //send payload to backend here
                     const formData = new FormData(this.form);
                     console.log('Signup data:', {
+                        id: formData.get('id'),
                         firstname: formData.get('firstname'),
                         lastname: formData.get('lastname'),
                         email: formData.get('email'),
@@ -539,7 +547,7 @@
 
                     // Example: sending JSON data to backend
                     // Send request with credentials (cookies)
-                    fetch("/api/accounts/update", {
+                    fetch("./api/accounts/update", {
                         method: "PUT",
                         credentials: "include", // VERY important to send cookies
                         body: formData

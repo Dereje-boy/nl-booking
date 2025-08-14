@@ -26,7 +26,7 @@ router.get('/getone', accountsController.getOneAccount);
 router.get('/create', accountsController.showCreateNewAccountForm);
 router.post('/create', upload.single('profilePicture'), accountsController.createNewAccount);
 
-router.get('/update', accountsController.showUpdateAccountForm);
+router.get('/update/:id', accountsController.showUpdateAccountForm);
 router.put('/update', upload.single('profilePicture'), accountsController.updateAccount);
 
 router.post('/delete', accountsController.deleteAccount);

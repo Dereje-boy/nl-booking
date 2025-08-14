@@ -182,10 +182,19 @@
 
         th,
         td {
-            padding: 1rem;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
-            white-space: nowrap;
+            padding: 1rem;
+            white-space: normal;
+            /* allow wrapping */
+            word-wrap: break-word;
+            /* break long words if needed */
+        }
+
+        .action-tr,
+        .action-td,
+        .action-th {
+            min-width: 250px;
         }
 
         th {
@@ -337,27 +346,20 @@
     <script>
         const data = {
             services: {
-                title: 'Services Management',
+                title: 'Services List',
                 buttonText: '+ New Service',
                 searchPlaceholder: 'Search services...',
                 searchFields: [
-                    { value: '', text: 'All Fields' },
+                    { value: '', text: 'Select Field' },
                     { value: '0', text: 'Service ID' },
-                    { value: '1', text: 'Name' },
-                    { value: '2', text: 'Department' },
+                    { value: '1', text: 'Short Name' },
+                    { value: '2', text: 'Type' },
                     { value: '3', text: 'Price' },
-                    { value: '4', text: 'Status' }
+                    { value: '4', text: 'Amount' }
                 ],
-                headers: ['Service ID', 'Name', 'Department', 'Price', 'Status'],
+                headers: ['Service ID', 'Shortname', 'Fullname', 'Description', 'Price', 'Amount', 'AvailableFrom', 'Type'],
                 rows: [
-                    ['SV001', 'General Consultation', 'General Medicine', '$150', 'Active'],
-                    ['SV002', 'Blood Test', 'Laboratory', '$80', 'Active'],
-                    ['SV003', 'X-Ray Scan', 'Radiology', '$200', 'Inactive'],
-                    ['SV004', 'Cardiology Checkup', 'Cardiology', '$300', 'Active'],
-                    ['SV005', 'Dental Cleaning', 'Dentistry', '$120', 'Active'],
-                    ['SV006', 'MRI Scan', 'Radiology', '$500', 'Active'],
-                    ['SV007', 'Surgery Consultation', 'Surgery', '$250', 'Active'],
-                    ['SV008', 'Physical Therapy', 'Rehabilitation', '$100', 'Active']
+                    ['2', 'Gurage Room', 'Gurage Single Bed Room', 'Already have an account? Sign in', '100', '1', '2025-08-14', 'Room']
                 ]
             },
             bookings: {
@@ -385,27 +387,22 @@
                 ]
             },
             accounts: {
-                title: 'Account Management',
+                title: 'Accounts List',
                 buttonText: '+ New Account',
                 searchPlaceholder: 'Search accounts...',
                 searchFields: [
-                    { value: '', text: 'All Fields' },
+                    { value: '', text: 'Select Field' },
                     { value: '0', text: 'Account ID' },
-                    { value: '1', text: 'Name' },
-                    { value: '2', text: 'Email' },
-                    { value: '3', text: 'Phone' },
-                    { value: '4', text: 'Role' }
+                    { value: '1', text: 'FirstName' },
+                    { value: '2', text: 'Lastname' },
+                    { value: '3', text: 'Email' },
+                    { value: '4', text: 'Phone' },
+                    { value: '5', text: 'Type' }
                 ],
-                headers: ['Account ID', 'Name', 'Email', 'Phone', 'Role'],
+                headers: ['Account ID', 'Firstname', 'Lastname', 'Email', 'Password', 'Pp_path', 'Phone', 'Type'],
+
                 rows: [
-                    ['AC001', 'Dr. Emma Wilson', 'emma.wilson@hcare.com', '(555) 123-4567', 'Doctor'],
-                    ['AC002', 'John Patient', 'john.patient@email.com', '(555) 234-5678', 'Patient'],
-                    ['AC003', 'Admin User', 'admin@hcare.com', '(555) 345-6789', 'Admin'],
-                    ['AC004', 'Nurse Mary', 'mary.nurse@hcare.com', '(555) 456-7890', 'Nurse'],
-                    ['AC005', 'Reception Staff', 'reception@hcare.com', '(555) 567-8901', 'Staff'],
-                    ['AC006', 'Dr. Michael Brown', 'michael.brown@hcare.com', '(555) 678-9012', 'Doctor'],
-                    ['AC007', 'Sarah Thompson', 'sarah.thompson@email.com', '(555) 789-0123', 'Patient'],
-                    ['AC008', 'Nurse Jennifer', 'jennifer.nurse@hcare.com', '(555) 890-1234', 'Nurse']
+                    ['2', 'Customer', 'One', 'customer1@gmail.com', '123123', '1755182842648.jpg', '0966558877', 'customer']
                 ]
             }
         };
@@ -416,7 +413,7 @@
         function showSection(section) {
             currentSection = section;
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            event.target.classList.add('active');
+            //event.target.classList.add('active');
 
             const sectionData = data[section];
             document.getElementById('tableTitle').textContent = sectionData.title;
@@ -447,10 +444,44 @@
             const thead = document.getElementById('tableHead');
             const tbody = document.getElementById('tableBody');
 
-            thead.innerHTML = '<tr>' + sectionData.headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+            thead.innerHTML = '<tr>' + sectionData.headers.map(h => `<th>${h}</th>`).join('') + '<th class="action-th">Actions</th></tr>';
             tbody.innerHTML = sectionData.rows.map(row =>
-                '<tr>' + row.map(cell => `<td>${cell}</td>`).join('') + '</tr>'
+                '<tr  class="action-tr">' + row.map(cell => `<td>${cell}</td>`).join('') + `
+                <td class="action-td">
+                     <button class= "new-btn btn-view" > View</button> 
+                     <button class="search-btn btn-edit">Edit</button>
+                     <button class="logout-btn btn-delete">Delete</button>
+                </td > 
+                </tr>`
             ).join('');
+
+            tbody.addEventListener('click', function (event) {
+                const target = event.target;
+                if (target.tagName === 'BUTTON') {
+                    const id = target.closest('tr').cells[0].textContent.trim();
+
+                    if (target.classList.contains('btn-view')) {
+                        window.location.href = `/accounts/${id}`;
+                    }
+                    else if (target.classList.contains('btn-edit')) {
+                        window.location.href = `/accounts/${id}/edit`;
+                    }
+                    else if (target.classList.contains('btn-delete')) {
+                        if (confirm('Are you sure you want to delete this account?')) {
+                            fetch(`/accounts/${id}`, { method: 'DELETE' })
+                                .then(res => {
+                                    if (res.ok) {
+                                        alert('Account deleted');
+                                        target.closest('tr').remove();
+                                    } else {
+                                        alert('Failed to delete account');
+                                    }
+                                })
+                                .catch(err => console.error(err));
+                        }
+                    }
+                }
+            });
         }
 
         function performSearch() {

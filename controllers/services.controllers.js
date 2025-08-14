@@ -1,13 +1,24 @@
+//importing service model of db
+const serviceModel = require('../models/serviceModel');
+
 
 exports.getAllServices = async (req, res) => {
-    res.json([{
-        id: 1,
-        shortname: 'Keficho Room'
-    }, {
-        id: 2,
-        shortname: 'Gurage Room'
-    },
-    ])
+    try {
+        const services = await serviceModel.getAllServices();
+        res.render('services/list', { services }); // renders handlebars view
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Database error');
+    }
+
+    // res.json([{
+    //     id: 1,
+    //     shortname: 'Keficho Room'
+    // }, {
+    //     id: 2,
+    //     shortname: 'Gurage Room'
+    // },
+    // ])
 };
 
 exports.getOneService = async (req, res) => {
@@ -20,15 +31,57 @@ exports.createNewService = async (req, res) => {
     const filePaths = req.files.map(file => `/uploads/services/${file.filename}`); // full public path
     console.log('Uploaded file names:', fileNames);
     console.log('Uploaded file paths:', filePaths);
-    console.log('Text fields:', req.body);       // username & email
+    console.log('Text fields:', req.body);
 
-    res.json({
-        success: true,
-        reason: null,
-        message: 'Upload successful',
-        fileNames,
-        filePaths
-    });
+    const photos = fileNames.join(',')
+
+    try {
+        const newServiceId = await serviceModel.createService({
+            shortname: req.body.shortName,
+            fullname: req.body.fullName,
+            description: req.body.description,
+            photos: photos,
+            price: parseFloat(req.body.price),
+            amount: req.body.amount ? parseInt(req.body.amount) : undefined,
+            type: req.body.type
+        });
+
+        console.log('New Service ID:', newServiceId);
+
+        res.json({
+            success: true,
+            reason: null,
+            message: 'Service Create successful',
+            fileNames,
+            filePaths
+        });
+    } catch (err) {
+        let reason = 'Database error'//generic reason as it isn't know yet
+        if (err.code === 'ER_BAD_NULL_ERROR') {
+            reason = (`Missing required field: ${err.sqlMessage}`);
+        } else if (err.code === 'ER_DUP_ENTRY') {
+            reason = ('Duplicate entry detected.');
+        } else {
+            reason = ('Unexpected database error.');
+        }
+
+        res.json({
+            success: false,
+            reason,
+            message: 'Service Creation failed',
+            fileNames,
+            filePaths
+        });
+    }
+
+    // res.json({
+    //     success: true,
+    //     reason: null,
+    //     message: 'Upload successful',
+    //     fileNames,
+    //     filePaths
+    // });
+
 
 };
 exports.createNewServiceForm = async (req, res) => {

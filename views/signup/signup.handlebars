@@ -487,8 +487,11 @@
                 error.textContent = '';
             }
 
+
             showSuccess() {
                 this.successMessage.style.display = 'block';
+                this.successMessage.textContent = "Account Created Successfully"
+
                 setTimeout(() => {
                     this.successMessage.style.display = 'none';
                 }, 3000);
@@ -549,15 +552,16 @@
 
                             this.signupBtn.disabled = false;
                             this.signupBtn.textContent = 'Create Account';
-                            this.form.reset();
-                            this.fileDisplay.innerHTML = '';
+                            //this.form.reset();
+                            //this.fileDisplay.innerHTML = '';
 
-                            if (!data) return
+                            if (!data)
+                                this.showFail(data['message'] + ", " + data['reason']);
                             if (data['success']) {
                                 //account created successfully
                                 this.showSuccess();
                             } else {
-                                this.showFail(data['message']);
+                                this.showFail(data['message'] + ", " + data['reason']);
                             }
                         })
                         .catch(err => {

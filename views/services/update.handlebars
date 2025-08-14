@@ -337,10 +337,15 @@
                 </div>
                 <div class="error-message" id="photosError"></div>
             </div>
+            <div class="form-group" id="priceGroup">
+                <label for="price">Price (ETB)</label>
+                <input type="number" id="price" name="price" value="1" min="1" step="1" required>
+                <div class="error-message" id="priceError"></div>
+            </div>
 
             <div class="form-group" id="amountGroup">
-                <label for="amount">Amount (Price)</label>
-                <input type="number" id="amount" name="amount" value="{{amount}}" min="1" step="1" required>
+                <label for="amount">Amount</label>
+                <input type="number" id="amount" name="amount" value="1" min="1" step="1" required>
                 <div class="error-message" id="amountError"></div>
             </div>
 

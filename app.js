@@ -51,6 +51,8 @@ app.get('/dashboard', (req, res) => {
 
 // 404 handler middleware (must be last)
 app.use((req, res, next) => {
+    console.log('passing through not found 404 error page')
+    console.log(req.originalUrl);
     res.status(404).render('404', { title: 'Page Not Found', layout: false });
 });
 
