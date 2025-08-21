@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negash Lodge - Premium Retreat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c5c1f;
+            --secondary-color: #d4af37;
+            --accent-color: #8b5cf6;
+            --light-bg: #f8f9fa;
+            --dark-text: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-text);
+            overflow-x: hidden;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 1.8rem;
+        }
+
+        .nav-link {
+            color: var(--dark-text) !important;
+            font-weight: 500;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #234e1a;
+            border-color: #234e1a;
+        }
+
+        /* Hero Carousel */
+        .carousel-item {
+            height: 80vh;
+            min-height: 500px;
+            background: no-repeat center center;
+            background-size: cover;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 5%;
+        }
+
+        .carousel-caption {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            bottom: 30%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .carousel-caption h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        /* About Section */
+        #about {
+            padding: 80px 0;
+            background-color: var(--light-bg);
+        }
+
+        .section-title {
+            position: relative;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: var(--secondary-color);
+            margin: 15px auto;
+        }
+
+        /* Services Section */
+        #services {
+            padding: 80px 0;
+        }
+
+        .service-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            margin-bottom: 30px;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-img {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .service-body {
+            padding: 20px;
+        }
+
+        .service-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .service-price {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        /* Contact Section */
+        #contact {
+            padding: 80px 0;
+            background-color: var(--light-bg);
+        }
+
+        .contact-info {
+            margin-bottom: 30px;
+        }
+
+        .contact-icon {
+            color: var(--primary-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+            width: 25px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 60px 0 30px;
+        }
+
+        .footer-title {
+            color: var(--secondary-color);
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .social-icons a {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-right: 15px;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--secondary-color);
+        }
+
+        .copyright {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .carousel-caption h2 {
+                font-size: 1.8rem;
+            }
+
+            .carousel-caption p {
+                font-size: 0.9rem;
+            }
+
+            .carousel-item {
+                height: 60vh;
+                min-height: 200px;
+            }
+        }
+
+        /* Loading Animation */
+        .loader {
+            display: flex;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        .loader-spinner {
+            width: 3rem;
+            height: 3rem;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-mountain me-2"></i>Negash Lodge
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary ms-2" href="/signup">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Carousel -->
+    <section id="home" class="mb-5 pt-5">
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="images/lodge/one.jpg" class="d-block w-100" alt="Lodge Image 1">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2>Welcome to Negash Lodge</h2>
+                        <p>Experience the perfect blend of nature and luxury at our serene retreat.</p>
+                        <a href="#services" class="btn btn-primary mt-3">Explore Our Services</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="images/lodge/two.jpg" class="d-block w-100" alt="Lodge Image 2">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2>Luxury Accommodations</h2>
+                        <p>Relax in our beautifully designed rooms with stunning natural views.</p>
+                        <a href="#services" class="btn btn-primary mt-3">View Rooms</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="images/lodge/three.jpg" class="d-block w-100" alt="Lodge Image 3">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2>Spa & Wellness</h2>
+                        <p>Rejuvenate your mind and body with our premium wellness services.</p>
+                        <a href="#services" class="btn btn-primary mt-3">Explore Our Services</a>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <h2 class="section-title">About Us</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <p class="lead">Negash Lodge offers a peaceful natural retreat, quality accommodation, and relaxing
+                        services for both local and international guests.</p>
+                    <p>Nestled in the beautiful landscapes of Woliso, our lodge provides the perfect escape from the
+                        hustle and bustle of city life. Whether you're looking for a romantic getaway, a family
+                        vacation, or a business retreat, we have the perfect accommodations and amenities to make your
+                        stay memorable.</p>
+                    <p>Our dedicated staff is committed to providing exceptional service and ensuring that your
+                        experience with us is nothing short of extraordinary.</p>
+                </div>
+                <div class="col-lg-6">
+                    <img src="images/lodge/eleven.jpg" class="img-fluid rounded shadow" alt="About Negash Lodge">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <p class="text-center mb-5">Discover our range of premium services designed for your comfort and enjoyment
+            </p>
+
+            <div id="servicesContainer" class="row">
+                <!-- Services will be loaded here by JavaScript -->
+                <div class="loader">
+                    <div class="loader-spinner"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <h4 class="mb-4">Get In Touch</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt contact-icon"></i> Negash Lodge, Woliso, Oromia, Ethiopia</p>
+                        <p><i class="fas fa-envelope contact-icon"></i> info@negashlodge.com</p>
+                        <p><i class="fas fa-phone contact-icon"></i> +251-912-345-678</p>
+                    </div>
+
+                    <h4 class="mt-5 mb-4">Business Hours</h4>
+                    <p>Monday - Friday: 8:00 AM - 10:00 PM</p>
+                    <p>Saturday - Sunday: 9:00 AM - 11:00 PM</p>
+                    <p>Online Booking : 24/7</p>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="mb-4">Our Location</h4>
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.google.com/maps?q=Negash+Lodge+Wolliso&output=embed" width="600"
+                            height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-5 pb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="footer-title">Negash Lodge</h5>
+                    <p>Experience the perfect blend of nature and luxury at our serene retreat in the heart of Woliso.
+                    </p>
+                    <div class="social-icons mt-3">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tripadvisor"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="footer-title">Quick Links</h5>
+                    <div class="footer-links">
+                        <a href="#home">Home</a>
+                        <a href="#about">About Us</a>
+                        <a href="#services">Services</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="footer-title">Our Services</h5>
+                    <div class="footer-links">
+                        <a href="#services">Room Booking</a>
+                        <a href="#services">Event Hosting</a>
+                        <a href="#services">Spa & Wellness</a>
+                        <a href="#services">Dining Experience</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="footer-title">Newsletter</h5>
+                    <p>Subscribe to our newsletter for special offers and updates.</p>
+                    <form>
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Your Email" aria-label="Your Email">
+                            <button class="btn btn-primary" type="button">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="text-center copyright">
+                <p>&copy; August, 2025 Negash Lodge. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize carousel with touch support
+        const carousel = new bootstrap.Carousel('#heroCarousel', {
+            interval: 5000,
+            touch: true
+        });
+
+        // Fetch services from API
+        async function fetchServices() {
+            try {
+                const response = await fetch('/api/services/getAll');
+                const services = await response.json();
+                console.log(services)
+
+                // Remove loader
+                document.querySelector('.loader').style.display = 'none';
+
+                // Render services
+                if (services && services.success && services.data) {
+                    renderServices(services.data);
+                }
+            } catch (error) {
+                console.error('Error fetching services:', error);
+                document.querySelector('.loader').innerHTML = `
+                    <div class="alert alert-warning text-center" role="alert">
+                        Unable to load services at this time. Please try again later.
+                    </div>
+                `;
+            }
+        }
+
+        // Render services to the page
+        function renderServices(services) {
+            const container = document.getElementById('servicesContainer');
+
+            if (!services || services.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 text-center">
+                        <p>No services available at the moment.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+
+            services.forEach(service => {
+                html += `
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="service-card">
+                            <img src="/uploads/services/${service.Photos ? service.Photos.split(',')[0] : 'three.jpg'}" 
+                                 class="service-img card-img-top" alt="${service.Shortname}">
+                            <div class="service-body">
+                                <h3 class="service-title">${service.Shortname}</h3>
+                                <p class="service-description">${service.Description || 'Experience our premium service.'}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="service-price">ETB: ${service.Price || '0'}</span>
+                                    <a class="btn btn-sm btn-primary" href="/dashboard">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchServices();
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Navbar background change on scroll
+            window.addEventListener('scroll', function () {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                    navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+                } else {
+                    navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                    navbar.style.boxShadow = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
