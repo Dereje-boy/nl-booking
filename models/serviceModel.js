@@ -3,6 +3,7 @@ const db = require('./db');
 
 exports.getAllServices = async () => {
     const [rows] = await db.query('SELECT * FROM services');
+    // console.log(rows)
     return rows;
 };
 

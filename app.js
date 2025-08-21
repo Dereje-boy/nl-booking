@@ -15,19 +15,10 @@ var loginRouter = require('./routes/login');
 var signupRouter = require('./routes/signup');
 var resetPasswordRouter = require('./routes/reset-password');
 var logoutRouter = require('./routes/logout');
+var dashboardRouter = require('./routes/dashboard');
 
 
 const app = express();
-
-//consuming our routes
-app.use('/api/accounts/', accountsRouter);
-app.use('/api/services/', servicesRouter);
-app.use('/api/bookings/', bookingsRouter);
-app.use('/login/', loginRouter);
-app.use('/logout/', logoutRouter);
-app.use('/signup/', signupRouter);
-app.use('/request-reset-password/', resetPasswordRouter);
-
 
 //consuming middlewares
 app.use(express.json());
@@ -40,13 +31,18 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
-app.get('/', (req, res) => {
-    // throw new Error('Test 500 error');
-    res.render('home');
-});
+//consuming our routes
+app.use('/api/accounts/', accountsRouter);
+app.use('/api/services/', servicesRouter);
+app.use('/api/bookings/', bookingsRouter);
+app.use('/login/', loginRouter);
+app.use('/logout/', logoutRouter);
+app.use('/signup/', signupRouter);
+app.use('/dashboard', dashboardRouter);
+app.use('/request-reset-password/', resetPasswordRouter);
 
-app.get('/dashboard', (req, res) => {
-    res.render('dashboard', { title: 'Dashboard', layout: false });
+app.get('/', (req, res) => {
+    res.render('home');
 });
 
 // 404 handler middleware (must be last)

@@ -66,7 +66,18 @@
         }
 
         .logout-btn {
+            text-decoration: none;
             background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .home-btn {
+            text-decoration: none;
+            background: green;
             color: white;
             border: none;
             padding: 0.5rem 1rem;
@@ -302,6 +313,7 @@
             <input type="text" id="searchInput" placeholder="Search bookings..." oninput="performSearch()">
             <button class="search-btn" onclick="clearSearch()">Clear</button>
         </div>
+        <a href="/" class="home-btn">Home</a>
         <a href="/logout" class="logout-btn">Logout</a>
     </nav>
 
@@ -316,16 +328,16 @@
             <div class="cards-container">
                 <div class="cards">
                     <div class="card">
-                        <h3 class="services">156</h3>
+                        <h3 class="accounts" id="accounts">0</h3>
+                        <p>User Accounts</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="services" id="services">0</h3>
                         <p>Total Services</p>
                     </div>
                     <div class="card">
-                        <h3 class="bookings">432</h3>
+                        <h3 class="bookings" id="bookings">0</h3>
                         <p>Active Bookings</p>
-                    </div>
-                    <div class="card">
-                        <h3 class="accounts">289</h3>
-                        <p>User Accounts</p>
                     </div>
                 </div>
             </div>
@@ -399,10 +411,10 @@
                     { value: '4', text: 'Phone' },
                     { value: '5', text: 'Type' }
                 ],
-                headers: ['Account ID', 'Firstname', 'Lastname', 'Email', 'Password', 'Pp_path', 'Phone', 'Type'],
+                headers: ['Account ID', 'Firstname', 'Lastname', 'Email', 'Pp_path', 'Phone', 'Type'],
 
                 rows: [
-                    ['2', 'Customer', 'One', 'customer1@gmail.com', '123123', '1755182842648.jpg', '0966558877', 'customer']
+                    ['2', 'Customer', 'One', 'customer1@gmail.com', '1755182842648.jpg', '0966558877', 'customer']
                 ]
             }
         };
@@ -410,12 +422,94 @@
         let currentSection = 'bookings';
         let originalData = {};
 
-        function showSection(section) {
+        async function showSection(section) {
             currentSection = section;
+            const sectionData = data[section];
+            if (currentSection == 'services') {
+                try {
+                    const res = await fetch('/api/services/getAll', {
+                        credentials: "include",
+                    });
+                    const thisServices = await res.json();
+                    sectionData.rows = [] //first make storage empty
+                    //loop over each service object and assign it's values to the storage
+                    for (let i = 0; i < thisServices.data.length; i++) {
+                        const s = thisServices.data[i];
+                        sectionData.rows.push([
+                            s.Id,
+                            s.Shortname,
+                            s.Fullname,
+                            s.Description || "",
+                            s.Price,
+                            s.Amount,
+                            s.AvailableFrom.slice(0, 10),
+                            s.Type
+                        ])
+                    }
+                    //console.log(thisServices)
+                } catch (e) {
+                    console.log('unable to fetch services list')
+                    console.error(e)
+                }
+            }
+            else if (currentSection == 'bookings') {
+                try {
+                    const res = await fetch('/api/services/getAll', {
+                        credentials: "include",
+                    });
+                    const thisServices = await res.json();
+                    sectionData.rows = [] //first make storage empty
+                    //loop over each service object and assign it's values to the storage
+                    for (let i = 0; i < thisServices.data.length; i++) {
+                        const s = thisServices.data[i];
+                        sectionData.rows.push([
+                            s.Id,
+                            s.Shortname,
+                            s.Fullname,
+                            s.Description || "",
+                            s.Price,
+                            s.Amount,
+                            s.AvailableFrom.slice(0, 10),
+                            s.Type
+                        ])
+                    }
+                    //console.log(thisServices)
+                } catch (e) {
+                    console.log('unable to fetch services list')
+                    console.error(e)
+                }
+
+            }
+            else if (currentSection == 'accounts') {
+                try {
+                    const res = await fetch('/api/accounts/getAll', {
+                        credentials: "include",
+                    });
+                    const thisAccounts = await res.json();
+                    sectionData.rows = [] //first make storage empty
+                    //loop over each service object and assign it's values to the storage
+                    for (let i = 0; i < thisAccounts.data.length; i++) {
+                        const s = thisAccounts.data[i];
+                        sectionData.rows.push([
+                            s.Id,
+                            s.Firstname,
+                            s.Lastname || '',
+                            s.Email,
+                            s.Pp_path || '',
+                            s.Phone,
+                            s.Type
+                        ])
+                    }
+                    //console.log(thisAccounts)
+                } catch (e) {
+                    console.log('unable to fetch accounts list')
+                    console.error(e)
+                }
+
+            }
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             //event.target.classList.add('active');
 
-            const sectionData = data[section];
             document.getElementById('tableTitle').textContent = sectionData.title;
             document.getElementById('newBtn').textContent = sectionData.buttonText;
             document.getElementById('searchInput').placeholder = sectionData.searchPlaceholder;
@@ -427,10 +521,11 @@
             document.getElementById('searchInput').value = '';
             document.getElementById('searchDropdown').value = '';
 
+
             // Store original data for filtering
             originalData[section] = [...sectionData.rows];
 
-            renderTable(sectionData);
+            renderTable(sectionData, currentSection);
         }
 
         function updateSearchDropdown(searchFields) {
@@ -440,16 +535,16 @@
             ).join('');
         }
 
-        function renderTable(sectionData) {
+        function renderTable(sectionData, currentSection) {
             const thead = document.getElementById('tableHead');
             const tbody = document.getElementById('tableBody');
 
             thead.innerHTML = '<tr>' + sectionData.headers.map(h => `<th>${h}</th>`).join('') + '<th class="action-th">Actions</th></tr>';
+
             tbody.innerHTML = sectionData.rows.map(row =>
                 '<tr  class="action-tr">' + row.map(cell => `<td>${cell}</td>`).join('') + `
                 <td class="action-td">
-                     <button class= "new-btn btn-view" > View</button> 
-                     <button class="search-btn btn-edit">Edit</button>
+                     <button class="search-btn btn-edit">View / Edit</button>
                      <button class="logout-btn btn-delete">Delete</button>
                 </td > 
                 </tr>`
@@ -460,11 +555,13 @@
                 if (target.tagName === 'BUTTON') {
                     const id = target.closest('tr').cells[0].textContent.trim();
 
-                    if (target.classList.contains('btn-view')) {
-                        window.location.href = `/accounts/${id}`;
-                    }
-                    else if (target.classList.contains('btn-edit')) {
-                        window.location.href = `/accounts/${id}/edit`;
+                    if (target.classList.contains('btn-edit')) {
+                        if (currentSection == 'services')
+                            window.location.href = `/api/services/update/${id}`;
+                        else if (currentSection == 'accounts')
+                            window.location.href = `/api/accounts/update/${id}`;
+                        else if (currentSection == 'bookings')
+                            window.location.href = `/api/bookings/update/${id}`;
                     }
                     else if (target.classList.contains('btn-delete')) {
                         if (confirm('Are you sure you want to delete this account?')) {
@@ -506,7 +603,7 @@
                 });
             }
 
-            renderTable(sectionData);
+            renderTable(sectionData, 'bookings');
         }
 
         function clearSearch() {
@@ -515,18 +612,52 @@
             performSearch();
         }
 
-        function addNew() {
+        function addNew(e) {
+            /*
             const currentSection = document.querySelector('.nav-item.active').textContent.toLowerCase().includes('services') ? 'service' :
                 document.querySelector('.nav-item.active').textContent.toLowerCase().includes('bookings') ? 'booking' : 'account';
+                */
+            console.log(this.textContent)
 
             if (currentSection.includes('servic')) window.location.href = "/api/services/create";
             if (currentSection.includes('accoun')) window.location.href = "/api/accounts/create";
             if (currentSection.includes('book')) window.location.href = "/api/bookings/create";
-            //alert(`Add new ${currentSection} functionality would be implemented here.`);
         }
 
         // Initialize with bookings section
         showSection('bookings');
+
+        //autorun method
+        (async () => {
+            try {
+                //loading services
+                const resServices = await fetch('/api/services/getAll', {
+                    credentials: "include",
+                });
+                const services = await resServices.json();
+                console.log(services.data.length)
+                document.querySelector('#services').innerText = services.data.length;
+
+                //loading accounts
+                const resAccounts = await fetch('/api/accounts/getAll', {
+                    credentials: "include",
+                });
+                const accounts = await resAccounts.json();
+                console.log(accounts.data.length)
+                document.querySelector('#accounts').innerText = accounts.data.length
+
+                //loading bookings
+                const resBookings = await fetch('/api/services/getAll', {
+                    credentials: "include",
+                });
+                const bookings = await resBookings.json();
+                console.log(bookings.data.length)
+                document.querySelector('#bookings').innerText = services.data.length;
+            } catch (e) {
+                console.log('unable to fetch services list')
+                console.error(e)
+            }
+        })();
     </script>
 </body>
 

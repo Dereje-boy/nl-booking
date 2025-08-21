@@ -1,3 +1,8 @@
+
+
+
+
 exports.logout = (req, res) => {
-    res.redirect('/')
+    res.cookie('token', '')
+    res.redirect('/login');
 }

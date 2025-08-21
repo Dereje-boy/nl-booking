@@ -3,12 +3,22 @@ const serviceModel = require('../models/serviceModel');
 
 
 exports.getAllServices = async (req, res) => {
+    let services = []
     try {
-        const services = await serviceModel.getAllServices();
-        res.render('services/list', { services }); // renders handlebars view
+        services = await serviceModel.getAllServices();
+        return res.send({
+            success: true,
+            reason: undefined,
+            message: 'Services fetched Successfully',
+            data: services
+        })
     } catch (err) {
         console.error(err);
-        res.status(500).send('Database error');
+        return res.send({
+            success: false,
+            reason: "Error found while fetching services from DB, Error : " + err,
+            message: 'Unable to fetch the service, please try again later'
+        })
     }
 
     // res.json([{

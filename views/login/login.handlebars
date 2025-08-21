@@ -291,14 +291,25 @@
                 error.textContent = '';
             }
 
-            showSuccess() {
+            showMessage(fail, message) {
                 this.successMessage.style.display = 'block';
+                if (fail) {
+                    this.successMessage.style.backgroundColor = 'red';
+                    this.successMessage.style.text = 'white';
+                    this.successMessage.innerText = message;
+                } else {
+                    this.successMessage.style.backgroundColor = 'green';
+                    this.successMessage.style.text = 'white';
+                    this.successMessage.innerText = message;
+                }
                 setTimeout(() => {
-                    this.successMessage.style.display = 'none';
+                    //this.successMessage.style.display = 'none';
+                    if (!fail)
+                        window.location.href = '/login'
                 }, 3000);
             }
 
-            handleSubmit(e) {
+            async handleSubmit(e) {
                 e.preventDefault();
 
                 // Hide any existing success message
@@ -313,27 +324,60 @@
                     this.loginBtn.disabled = true;
                     this.loginBtn.textContent = 'Signing In...';
 
-                    setTimeout(() => {
-                        this.loginBtn.disabled = false;
-                        this.loginBtn.textContent = 'Sign In';
-                        this.showSuccess();
+                    //here make fetch request
+                    const postData = {
+                        password: this.passwordInput.value,
+                        email: this.emailInput.value.trim()
+                    }
+                    //console.log(postData)
+                    try {
+                        const loginres = await fetch('/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(postData) // This is where the magic happens
+                        })
 
-                        // In a real application, you would send the data to your server
-                        console.log('Login data:', {
-                            email: this.emailInput.value,
-                            password: this.passwordInput.value
-                        });
+                        const res = await loginres.json();
+                        console.log(res)
+                        if (res != undefined && res.success) {
+                            this.showMessage(false, "Logged in successful now Redirecting you....")
+                        } else if (!res) {
+                            this.showMessage(true, "Error found making login, Please try agian later")
+                        } else {
+                            this.showMessage(true, res.result + " " + res.message)
+                        }
 
-                        // Reset form after successful submission
-                        setTimeout(() => {
-                            this.form.reset();
-                        }, 1000);
+                    } catch (error) {
+                        this.showMessage(true, "Error Making login Error: " + error)
+                    }
+                    this.loginBtn.disabled = false;
+                    this.loginBtn.textContent = 'Sign In';
 
-                    }, 1500);
+                    /**
+                                        setTimeout(() => {
+                                            this.loginBtn.disabled = false;
+                                            this.loginBtn.textContent = 'Sign In';
+                                            this.showMessage(false, 'Error Authentication please try agian later or contact Admin');
+                    
+                                            // In a real application, you would send the data to your server
+                                            console.log('Login data:', {
+                                                email: this.emailInput.value,
+                                                password: this.passwordInput.value
+                                            });
+                    
+                                            // Reset form after successful submission
+                                            setTimeout(() => {
+                                                this.form.reset();
+                                            }, 1000);
+                    
+                                        }, 1500);
+                                    }
+                                    **/
                 }
             }
         }
-
         // Initialize the validator when the DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             new LoginValidator();

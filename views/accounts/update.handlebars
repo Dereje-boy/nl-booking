@@ -234,7 +234,7 @@
                 <div class="form-group">
                     <label for="id">Account ID :</label>
                 </div>
-                <div class="form-group"><input type="number" value="{{id}}" readonly>
+                <div class="form-group"><input type="number" name="id" value="{{id}}" readonly>
                 </div>
             </div>
             <div class="form-row">
@@ -253,7 +253,7 @@
 
             <div class="form-group" id="emailGroup">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required value="{{email}}">
+                <input type="email" id="email" name="email" value="{{email}} " readonly>
                 <div class="error-message" id="emailError"></div>
             </div>
 
@@ -495,19 +495,19 @@
                 error.textContent = '';
             }
 
-            showSuccess() {
+            showSuccess(message) {
                 this.successMessage.style.display = 'block';
+                this.successMessage.style.backgroundColor = 'green';
+                this.successMessage.textContent = message;
                 setTimeout(() => {
-                    this.successMessage.style.display = 'none';
+                    //this.successMessage.style.display = 'none';
+                    window.location.href = '/dashboard'
                 }, 3000);
             }
             showFail(message) {
                 this.successMessage.style.display = 'block';
                 this.successMessage.style.backgroundColor = 'red';
-                this.successMessage.textContent = message ? message : "Unable to create the account try again later";
-                setTimeout(() => {
-                    this.successMessage.style.display = 'none';
-                }, 3000);
+                this.successMessage.textContent = message ? message : "Unable to update the accoun, try again later";
             }
 
             handleSubmit(e) {
@@ -531,11 +531,11 @@
                 if (allValid) {
                     // Simulate signup process
                     this.signupBtn.disabled = true;
-                    this.signupBtn.textContent = 'Creating Account...';
+                    this.signupBtn.textContent = 'Updating Account...';
 
                     //send payload to backend here
                     const formData = new FormData(this.form);
-                    console.log('Signup data:', {
+                    console.log('Update data:', {
                         id: formData.get('id'),
                         firstname: formData.get('firstname'),
                         lastname: formData.get('lastname'),
@@ -547,8 +547,8 @@
 
                     // Example: sending JSON data to backend
                     // Send request with credentials (cookies)
-                    fetch("./api/accounts/update", {
-                        method: "PUT",
+                    fetch("/api/accounts/update", {
+                        method: "POST",
                         credentials: "include", // VERY important to send cookies
                         body: formData
                     })
@@ -557,14 +557,14 @@
                             console.log("Server Response:", data);
 
                             this.signupBtn.disabled = false;
-                            this.signupBtn.textContent = 'Create Account';
-                            this.form.reset();
-                            this.fileDisplay.innerHTML = '';
+                            this.signupBtn.textContent = 'Update Account';
+                            //this.form.reset();
+                            //this.fileDisplay.innerHTML = '';
 
-                            if (!data) return
+                            if (!data) this.showFail("Unable to update the account. Please try agian later");
                             if (data['success']) {
-                                //account created successfully
-                                this.showSuccess();
+                                //account updated successfully
+                                this.showSuccess(data['message']);
                             } else {
                                 this.showFail(data['message']);
                             }
@@ -576,7 +576,7 @@
 
                     /**setTimeout(() => {
                         this.signupBtn.disabled = false;
-                        this.signupBtn.textContent = 'Create Account';
+                        this.signupBtn.textContent = 'Update Account';
                         this.showSuccess();
 
                         const formData = new FormData(this.form);

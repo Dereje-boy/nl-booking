@@ -280,8 +280,8 @@
             <div class="form-group" id="userTypeGroup">
                 <label for="userType">User Type</label>
                 <select id="userType" name="userType" required>
-                    <option value="staff" selected>Staff</option>
-                    <option value="customer">Customer</option>
+                    <option value="customer" selected>Customer</option>
+                    <option value="staff">Staff</option>
                     <option value="admin">Admin</option>
                 </select>
                 <div class="error-message" id="userTypeError"></div>
@@ -311,8 +311,8 @@
             </a>
         </div>
         <div class="link-container">
-            <a href="/">
-                Go to Homepage
+            <a href="/dashboard">
+                ← Back to Dashboard
             </a>
         </div>
     </div>
@@ -513,6 +513,7 @@
 
             showSuccess() {
                 this.successMessage.style.display = 'block';
+                this.successMessage.style.backgroundColor = 'green';
                 this.successMessage.textContent = "Account Created Successfully"
 
                 setTimeout(() => {
